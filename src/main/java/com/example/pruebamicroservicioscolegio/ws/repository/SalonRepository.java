@@ -3,6 +3,8 @@ package com.example.pruebamicroservicioscolegio.ws.repository;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -41,10 +43,15 @@ public interface SalonRepository extends JpaRepository<Salon, Integer> {
 	// (nombreCurso, capacidadAlumnos)")
 	// Map<String, Object> salonNuevo(Salon salon);
 
-	@Query(nativeQuery = true, value = "insert  tbl_salones (nombreCurso, capacidadAlumnos) values (:salon)")
-	Map<String, Object> salonNuevo(Salon salon);
 	
-	
+	@Modifying
+	@Transactional
+	@Query(nativeQuery = true,value = "insert into tbl_salones ( nombreCurso, capacidadAlumnos ) Values(:salonA,:num)")
+	void salonAdd(String salonA, Integer num);
+
+
+	@Query(nativeQuery = true,value = "select *  from tbl_salones  where tbl_salones.nombreCurso =:nombreSalon")
+	List<Map<String,Object >> respuestaSalonAdd(String nombreSalon );
 	
 
 }

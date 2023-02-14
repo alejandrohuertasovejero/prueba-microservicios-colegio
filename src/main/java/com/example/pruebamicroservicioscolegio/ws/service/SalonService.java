@@ -148,7 +148,6 @@ public class SalonService {
 
 				for (Map<String, Object> mapDatosAlumnos : datosAlumnos) {
 					int llaveAlumnosSalon = Integer.parseInt(mapDatosAlumnos.get("idSalon").toString());
-				
 
 					if (llaveSalon == llaveAlumnosSalon) {
 						AlumnoDTO alumno = new AlumnoDTO();
@@ -198,27 +197,26 @@ public class SalonService {
 
 	public List<SalonDTO> datosColegio2() {
 		try {
-		
-			List<Salon>listSalones= salonRepository.findAll();
-			List<Alumno>listAlumnos=  alumnoRepository.findAll();
-			List<Materia> listMaterias= materiaRepository.findAll();
-			
-			
+
+			List<Salon> listSalones = salonRepository.findAll();
+			List<Alumno> listAlumnos = alumnoRepository.findAll();
+			List<Materia> listMaterias = materiaRepository.findAll();
+
 			List<SalonDTO> listaSalon = new ArrayList<>();
-			
-			for (Salon     mapSalon1 : listSalones) {
+
+			for (Salon mapSalon1 : listSalones) {
 				int llaveSalon = (mapSalon1.getIdSalon());
 				SalonDTO salon = new SalonDTO();
-				
+
 				salon.setNombreSalon(mapSalon1.getNombreCurso());
-				salon.setIdSalon( mapSalon1.getIdSalon());
-				salon.setCantidad( mapSalon1.getCapacidadAlumnos());
-				
+				salon.setIdSalon(mapSalon1.getIdSalon());
+				salon.setCantidad(mapSalon1.getCapacidadAlumnos());
+
 				List<AlumnoDTO> listaAlumnos = new ArrayList<>();
 
 				for (Alumno alumnoss : listAlumnos) {
 					int llaveAlumnosSalon = (alumnoss.getSalon());
-					
+
 					if (llaveAlumnosSalon == llaveSalon) {
 						AlumnoDTO alumno = new AlumnoDTO();
 						alumno.setIdAlumnos(alumnoss.getIdAlumnos());
@@ -229,9 +227,9 @@ public class SalonService {
 						alumno.setNombreAcudiente(alumnoss.getNombreAcudiente());
 						alumno.setNumeroContacto(alumnoss.getNumeroContacto());
 						alumno.setIdSalon(alumnoss.getIdAlumnos());
-						
+
 						List<MateriaDTO> listaMateria = new ArrayList<>();
-						
+
 						for (Materia materiass : listMaterias) {
 
 							int llaveMateria = (materiass.getIdAlumnos());
@@ -241,9 +239,10 @@ public class SalonService {
 
 								materia.setNombreMateria(materiass.getNombreMateria());
 								materia.setIdmateria(materiass.getIdmateria());
-								materia.setNotaFinal(materiass.getNotaFinal() == null ?"  ":materiass.getNotaFinal());
+								materia.setNotaFinal(
+										materiass.getNotaFinal() == null ? "  " : materiass.getNotaFinal());
 								materia.setIdAlumnos(materiass.getIdAlumnos());
-							
+
 								listaMateria.add(materia);
 							}
 
@@ -266,42 +265,45 @@ public class SalonService {
 
 		}
 	}
-	
-	//  Body 
-	
-	public RespuestaCreacionSalonDTO ingresarSalon(DatosCreacionSalonDTO datosCreacionSalonDTO ) {
+
+	// Body
+
+	public RespuestaCreacionSalonDTO ingresarSalon(DatosCreacionSalonDTO datosCreacionSalonDTO) {
 		Salon salon = new Salon();
 		salon.setNombreCurso(datosCreacionSalonDTO.getNombreCurso());
 		salon.setCapacidadAlumnos(datosCreacionSalonDTO.getCapacidadAlumnos());
-		
+
 		salonRepository.save(salon);
-		
+
 		RespuestaCreacionSalonDTO respuesta = new RespuestaCreacionSalonDTO();
 		respuesta.setIdSalon(salon.getIdSalon());
 		respuesta.setNombreSalon(salon.getNombreCurso());
 		respuesta.setCantidad(salon.getCapacidadAlumnos());
 		return respuesta;
-		
-		}
-	//xxxxxxxx
-	public RespuestaCreacionSalonDTO ingresarSalonn(DatosCreacionSalonDTO datosCreacionSalonDTO ) {
-		
-		
-		Salon salon = new Salon();
-		salon.setNombreCurso(datosCreacionSalonDTO.getNombreCurso());
-		salon.setCapacidadAlumnos(datosCreacionSalonDTO.getCapacidadAlumnos());
-		 
-		salonRepository.save(salon);
-		
+
+	}
+
+	// xxxxxxxx
+	public RespuestaCreacionSalonDTO ingresarSalonn(DatosCreacionSalonDTO datosCreacionSalonDTO) {
+
+		String nombre = datosCreacionSalonDTO.getNombreCurso();
+		Integer numero = datosCreacionSalonDTO.getCapacidadAlumnos();
 		RespuestaCreacionSalonDTO respuesta = new RespuestaCreacionSalonDTO();
-		respuesta.setIdSalon(salon.getIdSalon());
-		respuesta.setNombreSalon(salon.getNombreCurso());
-		respuesta.setCantidad(salon.getCapacidadAlumnos());
+
+		salonRepository.salonAdd(nombre, numero);
+
+		List<Map<String, Object>> resp = salonRepository.respuestaSalonAdd(nombre);
+		for (Map<String, Object> map : resp) {
+
+			respuesta.setIdSalon(Integer.parseInt(map.get("idSalon").toString()));
+			respuesta.setNombreSalon(map.get("nombreCurso").toString());
+			respuesta.setCantidad(Integer.parseInt(map.get("capacidadAlumnos").toString()));
+			System.out.println("datoss  "+ respuesta.getNombreSalon());
+		}
+		System.out.println("datos rewspuesta  "  + respuesta.getNombreSalon());
 		return respuesta;
 		
 		
 	}
-	
-	
 
 }

@@ -1,7 +1,5 @@
 package com.example.pruebamicroservicioscolegio.ws.entity;
 
-
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,44 +17,42 @@ import org.springframework.lang.NonNull;
 @Table(name = "tbl_salones")
 
 public class Salon {
-	
+
 	@Id
 	@Column(name = "idSalon")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idSalon;
-	
-	@NotBlank(message = "no  puede ser nulo nombreCurso")
+
 	@Column(name = "nombreCurso")
+	
 	private String nombreCurso;
-	@NotNull(message = "no  puede ser nulo capacidadAlumnos")
+
 	@Column(name = "capacidadAlumnos")
+
 	private int capacidadAlumnos;
-	
-	
-	
-	
+
 	public int getIdSalon() {
 		return idSalon;
 	}
+
 	public void setIdSalon(int idSalon) {
 		this.idSalon = idSalon;
 	}
+
 	public String getNombreCurso() {
 		return nombreCurso;
 	}
+
 	public void setNombreCurso(String nombreCurso) {
 		this.nombreCurso = nombreCurso;
 	}
+
 	public int getCapacidadAlumnos() {
 		return capacidadAlumnos;
 	}
+
 	public void setCapacidadAlumnos(int capacidadAlumnos) {
 		this.capacidadAlumnos = capacidadAlumnos;
 	}
-	
-	
-	
-	
-	
-	
+
 }
